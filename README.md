@@ -1,9 +1,7 @@
 # 🐟 Automated Fish Drying System Firmware  
 ### (ESP32-Based Drying Controller with Firebase Integration)
 
-This repository contains the **firmware code** for the thesis project  
-**“Automated Fish Drying System with Microcontroller-Based Heat and Airflow for Efficient Moisture Removal.”**  
-The firmware runs on an **ESP32** microcontroller that automates heat, fan, and rotor control, monitors real-time **temperature and weight**, and sends data to **Firebase** for live monitoring via a mobile app.
+This repository contains the **firmware code** for the thesis project **“Automated Microcontroller-Based Fish Drying System for Enhanced Drying Performance.”** The firmware runs on an **ESP32** microcontroller that automates heat, fan, and rotor control, monitors real-time **temperature and weight**, and sends data to **Firebase** for live monitoring via a mobile app.
 
 ---
 
