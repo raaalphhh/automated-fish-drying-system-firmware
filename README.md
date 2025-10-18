@@ -60,28 +60,31 @@ Drying is controlled using **temperature and time-based logic**:
           │     ├── duration
           │     ├── timestamp
           │     └── epoch_time
-
 ```
 
 ## ⚡ Hardware Connections
 
 ```
-Component	Pin (ESP32)	Description
-HX711 (DT, SCK)	33, 32	Load cell interface
-DS18B20	GPIO 4	Temperature input
-Relays	13–21	Heat guns, lamps, fan, rotor
-Push Button	GPIO 5	Start/tare control
+| Component       | Pin (ESP32) | Description                  |
+| --------------- | ----------- | ---------------------------- |
+| HX711 (DT, SCK) | 33, 32      | Load cell interface          |
+| DS18B20         | GPIO 4      | Temperature input            |
+| Relays          | 13–21       | Heat guns, lamps, fan, rotor |
+| Push Button     | GPIO 5      | Start/tare control           |
+
 ```
 
 ## 🧰 Required Libraries
 ```
-Library	Purpose
-FirebaseESP32	Firebase database communication
-HX711	Load cell weight measurement
-DallasTemperature	DS18B20 reading
-Adafruit_SSD1306	OLED display (optional)
-WebServer	Handles local GET requests
-WiFi	Network connection for Firebase
+| Library           | Purpose                         |
+| ----------------- | ------------------------------- |
+| FirebaseESP32     | Firebase database communication |
+| HX711             | Load cell weight measurement    |
+| DallasTemperature | DS18B20 reading                 |
+| Adafruit_SSD1306  | OLED display (optional)         |
+| WebServer         | Handles local GET requests      |
+| WiFi              | Network connection for Firebase |
+
 ```
 
 ## 🔗 Integration with Flutter App
