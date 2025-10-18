@@ -53,7 +53,7 @@ This ensures **thermal consistency** and **controlled moisture removal** regardl
 
 > This control logic provides consistent drying efficiency and reduces human intervention, suitable for small-scale fishery applications.
 
----
+```
 
 ## 📡 Firebase Data Structure
 
@@ -72,7 +72,7 @@ This ensures **thermal consistency** and **controlled moisture removal** regardl
 │ └── epoch_time
 
 
----
+```
 
 ## 🚀 Getting Started
 
