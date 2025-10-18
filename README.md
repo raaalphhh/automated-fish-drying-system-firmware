@@ -1,110 +1,89 @@
-# 🐟 Automated Fish Drying System – ESP32 Firmware
+# 🐟 Automated Fish Drying System Firmware  
+### (ESP32-Based Drying Controller with Firebase Integration)
 
-This repository contains the **firmware** for the *Automated Fish Drying System*, a microcontroller-based drying solution that intelligently controls **temperature**, **airflow**, and **drying duration** to ensure efficient and consistent fish dehydration.  
-
-The system automatically manages **heat guns, fans, and lamps** using an **ESP32**, while sending real-time data to **Firebase** for monitoring through a mobile application.
+This repository contains the **firmware code** for the thesis project  
+**“Automated Fish Drying System with Microcontroller-Based Heat and Airflow for Efficient Moisture Removal.”**  
+The firmware runs on an **ESP32** microcontroller that automates heat, fan, and rotor control, monitors real-time **temperature and weight**, and sends data to **Firebase** for live monitoring via a mobile app.
 
 ---
 
 ## ⚙️ System Overview
 
-The firmware runs an **automated drying cycle** based on time and temperature thresholds, ensuring precise heat management without user intervention.  
-The system alternates between **normal** and **high-temperature** drying phases, automatically maintaining stable environmental conditions.
+The system uses:
+- **DS18B20 sensor** – to monitor drying temperature  
+- **HX711 load cell** – to measure fish weight and track moisture loss  
+- **Relays** – to control heat guns, lamps, rotor, and fan  
+- **Firebase** – as a real-time database for logging and monitoring  
+- **WebServer** – to handle local HTTP requests from the Flutter app  
 
-### 🔑 Control Parameters
-| Parameter | Description |
-|------------|-------------|
-| 🔥 **Heat Guns** | Activate when temperature ≤ 55°C; deactivate above 65°C |
-| 💡 **Lamps** | Assist drying, toggled based on temperature |
-| 🌬️ **Fan** | Turns ON for cooling when temperature ≥ 55°C |
-| 🔄 **Rotor Motor** | Ensures airflow circulation throughout drying |
-| ⏱️ **Duration** | Automatic 3-hour drying cycle per session |
-| 📦 **Weight Monitoring** | Continuous feedback via HX711 load cell |
-| 🌡️ **Temperature Sensing** | Real-time monitoring using DS18B20 sensor |
+Together, these create an automated drying process that alternates between **normal** and **high-temperature cycles**, ensuring consistent drying efficiency.
 
 ---
 
-## 🧰 Hardware & Components
+## 🔥 Process Algorithm
 
-| Component | Description |
-|------------|-------------|
-| **ESP32** | Main controller (WiFi + Firebase integration) |
-| **DS18B20** | Digital temperature sensor |
-| **HX711** | 24-bit ADC module for weight sensing |
-| **Relay Module (8-channel)** | Controls heat guns, fans, and lamps |
-| **OLED Display (optional)** | For local monitoring |
-| **Firebase** | Cloud database for data logging |
-| **Button** | Starts drying session/tare function |
+Drying is controlled using **temperature and time-based logic**:
+
+1. **Preheat Phase:**  
+   - Duration: ~3.5 minutes  
+   - Target temperature: 55°C  
+   - Heaters and lamps run until preheat temperature is reached.  
+
+2. **Main Drying Phase:**  
+   - Duration: 3 hours total  
+   - High-temp mode triggers every 10 minutes (up to 65°C).  
+   - Normal mode maintains ~55°C.  
+   - Fan activates automatically for cooling when overheated.  
+
+3. **Automatic Session End:**  
+   - After 3 hours, the system saves data to Firebase:
+     - Temperature  
+     - Initial & final weight  
+     - Moisture loss (%)  
+     - Duration and timestamp  
 
 ---
 
-## 🧩 Algorithm Summary
+## 🧮 Firebase Data Structure
 
-Drying follows a **temperature–time-based algorithm**, not weight loss–based.  
-This ensures **thermal consistency** and **controlled moisture removal** regardless of environmental fluctuations.
-
-### 🧠 Simplified Process
-1. **Preheat Phase** – Heats to ~55°C for 3.5 minutes.  
-2. **Normal Drying** – Maintains 55°C with periodic heat gun control.  
-3. **High-Temp Phase** – Every 10 minutes, system boosts to 65°C briefly.  
-4. **Cooling Control** – Fan engages automatically to prevent overheating.  
-5. **Auto Shutdown** – Session ends after 3 hours or manually via the button.  
-6. **Data Logging** – Temperature, weight, and duration uploaded to Firebase.  
-
-> This control logic provides consistent drying efficiency and reduces human intervention, suitable for small-scale fishery applications.
-
-```
-
-## 📡 Firebase Data Structure
-
+```plaintext
 /fish_drying_system/
-├── esp32_ip
-├── session_active
-├── high_temp
-└── fish_drying_sessions/
-├── session_19-10-2025_14-32-00/
-│ ├── temperature
-│ ├── initial_weight
-│ ├── final_weight
-│ ├── moisture_loss
-│ ├── duration
-│ ├── timestamp
-│ └── epoch_time
+    ├── esp32_ip
+    ├── session_active
+    ├── high_temp
+    └── fish_drying_sessions/
+          ├── session_19-10-2025_14-32-00/
+          │     ├── temperature
+          │     ├── initial_weight
+          │     ├── final_weight
+          │     ├── moisture_loss
+          │     ├── duration
+          │     ├── timestamp
+          │     └── epoch_time
 
+⚡ Hardware Connections
+Component	Pin (ESP32)	Description
+HX711 (DT, SCK)	33, 32	Load cell interface
+DS18B20	GPIO 4	Temperature input
+Relays	13–21	Heat guns, lamps, fan, rotor
+Push Button	GPIO 5	Start/tare control
 
-```
+🧰 Required Libraries
+Library	Purpose
+FirebaseESP32	Firebase database communication
+HX711	Load cell weight measurement
+DallasTemperature	DS18B20 reading
+Adafruit_SSD1306	OLED display (optional)
+WebServer	Handles local GET requests
+WiFi	Network connection for Firebase
 
-## 🚀 Getting Started
+🔗 Integration with Flutter App
+The ESP32 firmware pushes real-time data to Firebase paths,
+which are read and visualized in the companion app:
+automated-fish-drying-system-flutterapp
 
-### 1️⃣ Configure Wi-Fi & Firebase
-Update your credentials in the firmware:
-```cpp
-#define WIFI_SSID "YOUR_WIFI_SSID"
-#define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
-#define FIREBASE_HOST "https://your-project-id.firebaseio.com/"
-#define FIREBASE_AUTH "YOUR_FIREBASE_AUTH_KEY"
-
-2️⃣ Upload to ESP32
-Use Arduino IDE or PlatformIO.
-Select board: ESP32 Dev Module → Upload.
-
-3️⃣ Monitor Data
-Serial Monitor (115200 baud)
-
-Firebase console → /fish_drying_sessions
-
-🧪 Example Output
-
-Temperature: 64.9°C
-Weight: 5 kg
-Mode: High Temp
-Fan: ON | Lamps: OFF | Heatguns: OFF
-Session Duration: 3:00:00
-
-📜 License
-This firmware is open-source and intended for academic and research use under the MIT License.
-
-👨‍💻 Developer: Ralph Buenaventura
-🎓 BS Computer Engineering – Philippines
-📍 GitHub: @raaalphhh
-
+🧑‍💻 Developer
+Ralph Buenaventura
+🎓 Bachelor of Science in Computer Engineering
+📍 Philippines
+🔗 GitHub Profile: @raaalphhhb
