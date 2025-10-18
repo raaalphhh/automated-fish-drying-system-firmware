@@ -61,14 +61,20 @@ Drying is controlled using **temperature and time-based logic**:
           │     ├── timestamp
           │     └── epoch_time
 
-⚡ Hardware Connections
+```
+
+## ⚡ Hardware Connections
+
+```
 Component	Pin (ESP32)	Description
 HX711 (DT, SCK)	33, 32	Load cell interface
 DS18B20	GPIO 4	Temperature input
 Relays	13–21	Heat guns, lamps, fan, rotor
 Push Button	GPIO 5	Start/tare control
+```
 
-🧰 Required Libraries
+## 🧰 Required Libraries
+```
 Library	Purpose
 FirebaseESP32	Firebase database communication
 HX711	Load cell weight measurement
@@ -76,11 +82,14 @@ DallasTemperature	DS18B20 reading
 Adafruit_SSD1306	OLED display (optional)
 WebServer	Handles local GET requests
 WiFi	Network connection for Firebase
+```
 
-🔗 Integration with Flutter App
+## 🔗 Integration with Flutter App
+```
 The ESP32 firmware pushes real-time data to Firebase paths,
 which are read and visualized in the companion app:
 automated-fish-drying-system-flutterapp
+```
 
 🧑‍💻 Developer
 Ralph Buenaventura
