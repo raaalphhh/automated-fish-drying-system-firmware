@@ -92,8 +92,10 @@ which are read and visualized in the companion app:
 automated-fish-drying-system-flutterapp
 ```
 
-🧑‍💻 Developer
+### 🧑‍💻 Developer
+```
 Ralph Buenaventura
 🎓 Bachelor of Science in Computer Engineering
 📍 Philippines
-🔗 GitHub Profile: @raaalphhhb
+🔗 GitHub Profile: @raaalphhh
+```
